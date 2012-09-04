@@ -8,108 +8,124 @@
   // @param {string} id - The <table/> #ID
   // @example var SortTable = new SortTable('tableId');
   // @returns {string}
-  SortTable = function (id) {
-    this.id = id;
+  this.SortTable = function (id) {
+    // auto-create a new instance without the 'new' keyword
+    if (!(this instanceof SortTable)) {
+      return new this.SortTable(id);
+    }
+
+    this.table = document.getElementById(id);
+    if (!this.table) {
+      throw new Error('Table width id "' + id + '" was not found on the document');
+    }
+
+    return this;
   };
 
   // @returns {object} - <table/> by it's #ID
   SortTable.prototype.init = function () {
-    var table = document.getElementById(this.id),
-      isTable = table.tagName === 'TABLE' ? table : null;
+    var self = this,
+      thead = self.get('thead');
 
-    try {
-      return isTable;
-    } finally {
-      table = isTable = null;
+    self.on('click', thead, function (ev) {
+      // get th to sort from current Event object
+      var th = ev.target || ev.srcElement,
+        tbody = self.get('tbody');
+
+      self.set(th, tbody);
+    });
+  };
+
+  // extensible sort object
+  SortTable.prototype.sortBy = {
+    // @returns the index for the current sorted row
+    'default': function (row1, row2) {
+      return row1.value < row2.value ? -1 : row1.value > row2.value ? 1 : 0;
+    },
+
+    date: function (row1, row2) {
+      // compare dates and return index
     }
   };
 
-  // @param {string} el - A <table/> child elements ('tbody', 'thead', 'tfoot')
+  // cross-platform event binding function
+  SortTable.prototype.on = function (type, el, handler) {
+    if (el.addEventListener) {
+      el.addEventListener(type, handler, false);
+    } else if (el.attachEvent) {
+      el.attachEvent('on' + type, handler);
+    }
+  };
+
+  // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
   SortTable.prototype.get = function (el) {
     if (el === 'tbody') {
-      el = this.init().tBodies[0];
-    } else if (el === 'thead') {
-      el = this.init().tHead;
-    } else if (el === 'tfoot') {
-      el = this.init().tFoot;
+      el = this.table.tBodies[0];
+
+    // get tHead or tFoot
+    } else if (el === 'thead' || el === 'tfoot') {
+      el = this.table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase(); })];
     } else {
       el = null;
     }
 
-    try {
-      return el;
-    } finally {
-      el = null;
-    }
+    return el;
   };
 
-  // @param {string} el - Element to be target
-  // @param {string} tbody - <tbody/> index to sort
-  SortTable.prototype.set = function (el, tbody) {
-    var elementTarget = el.target ? el.target : el.srcElement,
-      i = 0,
-      j = 0,
-      cellIndex,
-      cached,
+  // @param {object} th - Native DOM th element
+  // @param {object} tbody - Native DOM tbody element
+  SortTable.prototype.set = function (th, tbody) {
+    var i,
+      cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
-      rows,
-      cellsObj = [],
-      dataSortTable,
+      row,
+      cells = [],
+      sortType = th.getAttribute('data-sorttable'),
       newTr;
 
     //console.time('set');
 
-    cellIndex = elementTarget.cellIndex;
+    for (i = 0; rowsLength > i; i += 1) {
+      row = tbody.rows[i];
 
-    for (i; rowsLength > i; i = i + 1) {
-      rows = tbody.rows[i];
-
-      cellsObj.push({
-        'key': i,
-        'value': rows.cells[cellIndex].innerText,
-        'row': rows.innerHTML
+      cells.push({
+        value: row.cells[cellIndex].innerText,
+        content: row.innerHTML
       });
     }
 
-    dataSortTable = elementTarget.getAttribute('data-sorttable');
+    // normal sort
+    if (sortType !== 'reverse') {
+      // set to reverse
+      th.setAttribute('data-sorttable', 'reverse');
+      // save the sort type
+      th.setAttribute('data-sorttype', sortType);
+      // sort
+      cells.sort(this.sortBy[sortType]);
 
-    if (dataSortTable === 'sort') {
-      elementTarget.setAttribute('data-sorttable','reverse');
-      // Sorting an array of objects
-      cellsObj.sort(SortBy.sortObject);
-    } else if (dataSortTable === 'reverse') {
-      elementTarget.setAttribute('data-sorttable','sort');
-      // Sorting array of objects reversed
-      cellsObj.sort(SortBy.sortObject).reverse();
+    // reverse sort
+    } else {
+      // get the original sort type
+      sortType = th.getAttribute('data-sorttype');
+      // set the sorttype
+      th.setAttribute('data-sorttable', sortType);
+      // sort and reverse
+      cells.sort(this.sortBy[sortType]).reverse();
     }
 
+    // empty tbody
     tbody.innerHTML = '';
-    for (j; rowsLength > j; j = j + 1) {
+    for (i = 0; rowsLength > i; i += 1) {
       newTr = document.createElement('tr');
-      newTr.innerHTML = cellsObj[j].row;
+      newTr.innerHTML = cells[i].content;
+      // populate tbody with sorted rows
       tbody.appendChild(newTr);
     }
 
-    // Nullify
-    tbody = elemente = elementTarget = i  = j =  cellIndex = rows = cellsObj = null;
+    // clear variables that store dom objects reference
+    tbody = th = row = null;
 
     //console.timeEnd('set');
   };
 
-  SortTable.prototype.sort = function () {
-    var self = this,
-      thead = self.get('thead');
-
-    SortEvents.bindEvent(thead,
-      'click',
-      function(el) {
-        var tbody = self.get('tbody');
-        self.set(el, tbody);
-      }
-    );
-  };
-})();
-
-// @exampele:
-var SortTable = new SortTable('tableId');
-SortTable.sort();
+}());
