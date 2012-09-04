@@ -8,12 +8,19 @@
   // @param {string} id - The <table/> #ID
   // @example var SortTable = new SortTable('tableId');
   // @returns {string}
-  var SortTable = function (id) {
-      this.table = document.getElementById(id);
-      if (!this.table) {
-        throw new Error('Table width id "' + id + '" was not found on the document');
-      }
-    };
+  this.SortTable = function (id) {
+    // auto-create a new instance without the 'new' keyword
+    if (!(this instanceof SortTable)) {
+      return new this.SortTable(id);
+    }
+
+    this.table = document.getElementById(id);
+    if (!this.table) {
+      throw new Error('Table width id "' + id + '" was not found on the document');
+    }
+
+    return this;
+  };
 
   // @returns {object} - <table/> by it's #ID
   SortTable.prototype.init = function () {
@@ -32,7 +39,7 @@
   // extensible sort object
   SortTable.prototype.sortBy = {
     // @returns the index for the current sorted row
-    default: function (row1, row2) {
+    'default': function (row1, row2) {
       return row1.value < row2.value ? -1 : row1.value > row2.value ? 1 : 0;
     },
 
@@ -57,7 +64,7 @@
 
     // get tHead or tFoot
     } else if (el === 'thead' || el === 'tfoot') {
-      el = this.table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase() })];
+      el = this.table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase(); })];
     } else {
       el = null;
     }
@@ -68,7 +75,7 @@
   // @param {object} th - Native DOM th element
   // @param {object} tbody - Native DOM tbody element
   SortTable.prototype.set = function (th, tbody) {
-    var i = 0,
+    var i,
       cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
       row,
@@ -121,10 +128,4 @@
     //console.timeEnd('set');
   };
 
-  // expose SortTable to global object
-  this.SortTable = SortTable;
 }());
-
-// @example:
-var SortTable = new SortTable('tableId');
-SortTable.init();
