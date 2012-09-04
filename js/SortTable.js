@@ -1,4 +1,3 @@
-
 // SortTable.js
 // @version 0.1
 
@@ -58,7 +57,7 @@
       dataSortTable,
       newTr;
 
-    console.time('set');
+    //console.time('set');
 
     cellIndex = elementTarget.cellIndex;
 
@@ -94,7 +93,7 @@
     // Nullify
     tbody = elemente = elementTarget = i  = j =  cellIndex = rows = cellsObj = null;
 
-    console.timeEnd('set');
+    //console.timeEnd('set');
   };
 
   SortTable.prototype.sort = function () {
