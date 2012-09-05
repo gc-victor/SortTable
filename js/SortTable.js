@@ -19,7 +19,7 @@
       throw new Error('Table width id "' + id + '" was not found on the document');
     }
 
-    return this;
+    return this.init();
   };
 
   // @returns {object} - <table/> by it's #ID
@@ -34,6 +34,8 @@
 
       self.set(th, tbody);
     });
+
+    return self;
   };
 
   // extensible sort object
@@ -78,6 +80,7 @@
     var i,
       cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
+      totalRows = rowsLength,
       row,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
@@ -106,12 +109,14 @@
       cells.reverse();
     }
 
-    // empty tbody
-    tbody.innerHTML = '';
     for (i = 0; rowsLength > i; i += 1) {
+      // innerHTML doesn't work on IE to empty the table, use deleteRow instead
+      tbody.deleteRow(--totalRows);
+      // create new tr element
       newTr = document.createElement('tr');
+      // TODO: IE doesn't support innerHTML on tr elements
       newTr.innerHTML = cells[i].content;
-      // populate tbody with sorted rows
+      // populate tbody with current tr
       tbody.appendChild(newTr);
     }
 
