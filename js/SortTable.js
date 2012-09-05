@@ -14,9 +14,15 @@
       return new this.SortTable(id);
     }
 
+    // get html table
     this.table = document.getElementById(id);
     if (!this.table) {
       throw new Error('Table width id "' + id + '" was not found on the document');
+    }
+
+    // check if plugin already initialized
+    if (this.table.sortTable) {
+      return this.table.sortTable;
     }
 
     return this.init();
@@ -24,18 +30,32 @@
 
   // @returns {object} - <table/> by it's #ID
   SortTable.prototype.init = function () {
-    var self = this,
-      thead = self.get('thead');
+    var self = this;
 
-    self.on('click', thead, function (ev) {
+    this.thead = this.get('thead');
+    this.tbody = this.get('tbody');
+
+    this.handler = function (ev) {
       // get th to sort from current Event object
-      var th = ev.target || ev.srcElement,
-        tbody = self.get('tbody');
+      var th = ev.target || ev.srcElement;
 
-      self.set(th, tbody);
-    });
+      self.set(th);
+    };
 
-    return self;
+    // register handler
+    this.on('click', this.thead, this.handler);
+
+    // mark plugin as initialized
+    // saving reference to the instance
+    this.table.sortTable = this;
+
+    return this;
+  };
+
+  // destroy the plugin
+  SortTable.prototype.destroy = function () {
+    this.off('click', this.thead, this.handler);
+    this.table.sortTable = undefined;
   };
 
   // extensible sort object
@@ -59,6 +79,14 @@
     }
   };
 
+  SortTable.prototype.off = function (type, el, handler) {
+    if (el.removeEventListener) {
+      el.removeEventListener(type, handler, false);
+    } else if (el.attachEvent) {
+      el.detachEvent('on' + type, handler);
+    }
+  };
+
   // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
   SortTable.prototype.get = function (el) {
     if (el === 'tbody') {
@@ -76,8 +104,9 @@
 
   // @param {object} th - Native DOM th element
   // @param {object} tbody - Native DOM tbody element
-  SortTable.prototype.set = function (th, tbody) {
-    var i,
+  SortTable.prototype.set = function (th) {
+    var tbody = this.tbody,
+      i,
       cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
       totalRows = rowsLength,
