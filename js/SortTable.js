@@ -81,6 +81,7 @@
       row,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
+      reverse = th.getAttribute('data-reverse') === 'true' ? true : false,
       newTr;
 
     //console.time('set');
@@ -94,23 +95,15 @@
       });
     }
 
-    // normal sort
-    if (sortType !== 'reverse') {
-      // set to reverse
-      th.setAttribute('data-sorttable', 'reverse');
-      // save the sort type
-      th.setAttribute('data-sorttype', sortType);
-      // sort
-      cells.sort(this.sortBy[sortType]);
+    // toggle reverse status
+    th.setAttribute('data-reverse', !reverse);
 
-    // reverse sort
-    } else {
-      // get the original sort type
-      sortType = th.getAttribute('data-sorttype');
-      // set the sorttype
-      th.setAttribute('data-sorttable', sortType);
-      // sort and reverse
-      cells.sort(this.sortBy[sortType]).reverse();
+    // sort
+    cells.sort(this.sortBy[sortType]);
+
+    // reverse if needed
+    if (reverse) {
+      cells.reverse();
     }
 
     // empty tbody
