@@ -14,26 +14,48 @@
       return new this.SortTable(id);
     }
 
+    // get html table
     this.table = document.getElementById(id);
     if (!this.table) {
       throw new Error('Table width id "' + id + '" was not found on the document');
     }
 
-    return this;
+    // check if plugin already initialized
+    if (this.table.sortTable) {
+      return this.table.sortTable;
+    }
+
+    return this.init();
   };
 
   // @returns {object} - <table/> by it's #ID
   SortTable.prototype.init = function () {
-    var self = this,
-      thead = self.get('thead');
+    var self = this;
 
-    self.on('click', thead, function (ev) {
+    this.thead = this.get('thead');
+    this.tbody = this.get('tbody');
+
+    this.handler = function (ev) {
       // get th to sort from current Event object
-      var th = ev.target || ev.srcElement,
-        tbody = self.get('tbody');
+      var th = ev.target || ev.srcElement;
 
-      self.set(th, tbody);
-    });
+      self.set(th);
+    };
+
+    // register handler
+    this.on('click', this.thead, this.handler);
+
+    // mark plugin as initialized
+    // saving reference to the instance
+    this.table.sortTable = this;
+
+    return this;
+  };
+
+  // destroy the plugin
+  SortTable.prototype.destroy = function () {
+    this.off('click', this.thead, this.handler);
+    this.table.sortTable = undefined;
   };
 
   // extensible sort object
@@ -57,6 +79,14 @@
     }
   };
 
+  SortTable.prototype.off = function (type, el, handler) {
+    if (el.removeEventListener) {
+      el.removeEventListener(type, handler, false);
+    } else if (el.attachEvent) {
+      el.detachEvent('on' + type, handler);
+    }
+  };
+
   // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
   SortTable.prototype.get = function (el) {
     if (el === 'tbody') {
@@ -74,13 +104,16 @@
 
   // @param {object} th - Native DOM th element
   // @param {object} tbody - Native DOM tbody element
-  SortTable.prototype.set = function (th, tbody) {
-    var i,
+  SortTable.prototype.set = function (th) {
+    var tbody = this.tbody,
+      i,
       cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
+      totalRows = rowsLength,
       row,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
+      reverse = th.getAttribute('data-reverse') === 'true' ? true : false,
       newTr;
 
     //console.time('set');
@@ -94,31 +127,25 @@
       });
     }
 
-    // normal sort
-    if (sortType !== 'reverse') {
-      // set to reverse
-      th.setAttribute('data-sorttable', 'reverse');
-      // save the sort type
-      th.setAttribute('data-sorttype', sortType);
-      // sort
-      cells.sort(this.sortBy[sortType]);
+    // toggle reverse status
+    th.setAttribute('data-reverse', !reverse);
 
-    // reverse sort
-    } else {
-      // get the original sort type
-      sortType = th.getAttribute('data-sorttype');
-      // set the sorttype
-      th.setAttribute('data-sorttable', sortType);
-      // sort and reverse
-      cells.sort(this.sortBy[sortType]).reverse();
+    // sort
+    cells.sort(this.sortBy[sortType]);
+
+    // reverse if needed
+    if (reverse) {
+      cells.reverse();
     }
 
-    // empty tbody
-    tbody.innerHTML = '';
     for (i = 0; rowsLength > i; i += 1) {
+      // innerHTML doesn't work on IE to empty the table, use deleteRow instead
+      tbody.deleteRow(--totalRows);
+      // create new tr element
       newTr = document.createElement('tr');
+      // TODO: IE doesn't support innerHTML on tr elements
       newTr.innerHTML = cells[i].content;
-      // populate tbody with sorted rows
+      // populate tbody with current tr
       tbody.appendChild(newTr);
     }
 
