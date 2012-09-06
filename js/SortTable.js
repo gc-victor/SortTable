@@ -90,6 +90,7 @@
       rowsLength = tbody.rows.length,
       totalRows = rowsLength,
       row,
+      value,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
       reverse = th.getAttribute('data-reverse') === 'true' ? true : false,
@@ -101,8 +102,11 @@
     for (i = 0; rowsLength > i; i += 1) {
       row = tbody.rows[i];
 
+      // innerText doesn't work on FF it use textContent
+      value = row.cells[cellIndex].innerText === undefined ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
+
       cells.push({
-        value: row.cells[cellIndex].innerText,
+        value: value,
         content: row.innerHTML
       });
     }
@@ -130,7 +134,6 @@
       temp = this.get('tbody', temp.firstChild);
       // get the tbody rows
       newTr = temp.rows[0];
-
       // populate tbody with current tr
       tbody.appendChild(newTr);
     }
