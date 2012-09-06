@@ -92,7 +92,7 @@
       row,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      reverse = th.getAttribute('data-reverse'),
+      reverse = th.getAttribute('data-reverse') === 'true' ? true : false,
       newTr,
       temp;
 
@@ -121,7 +121,7 @@
     for (i = 0; rowsLength > i; i += 1) {
       // innerHTML doesn't work on IE to empty the table, use deleteRow instead
       tbody.deleteRow(--totalRows);
-      // create new div element to IE support innerHTML on tr elements
+      // create new div element
       // @see - http://www.ericvasilik.com/2006/07/code-karma.html
       temp = document.createElement('div');
       // insert a new table inside temp
@@ -140,4 +140,5 @@
 
     // console.timeEnd('set');
   };
+
 }());
