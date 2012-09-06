@@ -5,35 +5,42 @@
 
   // Represents the table we are going to sort.
   // @constructor
-  // @param {string} id - The <table/> #ID
-  // @example var SortTable = new SortTable('tableId');
+  // @example SortTable();
   // @returns {string}
-  this.SortTable = function (id) {
+  this.SortTable = function () {
     // auto-create a new instance without the 'new' keyword
     if (!(this instanceof SortTable)) {
-      return new this.SortTable(id);
+      return new this.SortTable();
     }
 
-    this.table = document.getElementById(id);
-    if (!this.table) {
-      throw new Error('Table width id "' + id + '" was not found on the document');
-    }
-
-    return this;
+    return this.init();
   };
 
   // @returns {object} - <table/> by it's #ID
   SortTable.prototype.init = function () {
     var self = this,
-      thead = self.get('thead');
+      tables = document.getElementsByTagName('table'),
+      i;
 
-    self.on('click', thead, function (ev) {
+    this.handler = function (ev) {
       // get th to sort from current Event object
       var th = ev.target || ev.srcElement,
-        tbody = self.get('tbody');
+        tbody,
+        el;
 
-      self.set(th, tbody);
-    });
+      if (th.getAttribute('data-sorttable') !== null) {
+        tbody = self.get('tbody', th.parentElement.parentElement.parentElement);
+        self.set(th, tbody);
+      }
+    };
+
+    for (i = 0; i < tables.length; i += 1) {
+      if (tables[i].getAttribute('data-sorttable')) {
+        this.on('click', this.get('thead', tables[i]), this.handler);
+      }
+    }
+
+    tables = null;
   };
 
   // extensible sort object
@@ -58,18 +65,21 @@
   };
 
   // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
-  SortTable.prototype.get = function (el) {
+  SortTable.prototype.get = function (el, table) {
     if (el === 'tbody') {
-      el = this.table.tBodies[0];
+      el = table.tBodies[0];
 
     // get tHead or tFoot
     } else if (el === 'thead' || el === 'tfoot') {
-      el = this.table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase(); })];
-    } else {
-      el = null;
+      el = table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase(); })];
     }
 
-    return el;
+    // clear variables that store dom objects reference
+    try {
+      return el;
+    } finally {
+      table = el = null;
+    }
   };
 
   // @param {object} th - Native DOM th element
@@ -78,12 +88,15 @@
     var i,
       cellIndex = th.cellIndex,
       rowsLength = tbody.rows.length,
+      totalRows = rowsLength,
       row,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      newTr;
+      reverse = th.getAttribute('data-reverse'),
+      newTr,
+      temp;
 
-    //console.time('set');
+    // console.time('set');
 
     for (i = 0; rowsLength > i; i += 1) {
       row = tbody.rows[i];
@@ -94,38 +107,37 @@
       });
     }
 
-    // normal sort
-    if (sortType !== 'reverse') {
-      // set to reverse
-      th.setAttribute('data-sorttable', 'reverse');
-      // save the sort type
-      th.setAttribute('data-sorttype', sortType);
-      // sort
-      cells.sort(this.sortBy[sortType]);
+    // toggle reverse status
+    th.setAttribute('data-reverse', !reverse);
 
-    // reverse sort
-    } else {
-      // get the original sort type
-      sortType = th.getAttribute('data-sorttype');
-      // set the sorttype
-      th.setAttribute('data-sorttable', sortType);
-      // sort and reverse
-      cells.sort(this.sortBy[sortType]).reverse();
+    // sort
+    cells.sort(this.sortBy[sortType]);
+
+    // reverse if needed
+    if (reverse) {
+      cells.reverse();
     }
 
-    // empty tbody
-    tbody.innerHTML = '';
     for (i = 0; rowsLength > i; i += 1) {
-      newTr = document.createElement('tr');
-      newTr.innerHTML = cells[i].content;
-      // populate tbody with sorted rows
+      // innerHTML doesn't work on IE to empty the table, use deleteRow instead
+      tbody.deleteRow(--totalRows);
+      // create new div element to IE support innerHTML on tr elements
+      // @see - http://www.ericvasilik.com/2006/07/code-karma.html
+      temp = document.createElement('div');
+      // insert a new table inside temp
+      temp.innerHTML = '<table><tbody><tr>' + cells[i].content;
+      // get the temp tbody element
+      temp = this.get('tbody', temp.firstChild);
+      // get the tbody rows
+      newTr = temp.rows[0];
+
+      // populate tbody with current tr
       tbody.appendChild(newTr);
     }
 
     // clear variables that store dom objects reference
-    tbody = th = row = null;
+    temp = tbody = th = row = newTr = null;
 
-    //console.timeEnd('set');
+    // console.timeEnd('set');
   };
-
 }());
