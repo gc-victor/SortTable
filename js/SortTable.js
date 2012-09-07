@@ -22,11 +22,24 @@
       tables = document.getElementsByTagName('table'),
       i;
 
-    // Detect Internet Explorer and Firefox browsers
-    self.isIE = (/MSIE/g).test(navigator.userAgent);
-    self.isFF = (/Firefox/g).test(navigator.userAgent);
+    // Detects browsers and version
+    // @see - http://stackoverflow.com/questions/2400935/browser-detection-in-javascript
+    self.browser = function() {
+      var N = navigator.appName,
+        ua = navigator.userAgent,
+        tem,
+        M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
 
-    this.handler = function (ev) {
+      if (M && (tem = ua.match(/version\/([\.\d]+)/i)) !== null) {
+        M[2] = tem[1];
+      }
+
+      M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
+
+      return M;
+    };
+
+    self.handler = function (ev) {
       // get th to sort from current Event object
       var th = ev.target || ev.srcElement,
         tbody,
@@ -40,7 +53,7 @@
 
     for (i = 0; i < tables.length; i += 1) {
       if (tables[i].getAttribute('data-sorttable')) {
-        this.on('click', this.get('thead', tables[i]), this.handler);
+        self.on('click', self.get('thead', tables[i]), self.handler);
       }
     }
 
@@ -97,7 +110,8 @@
       value,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      reverse = th.getAttribute('data-reverse'),
+      dataReverse = th.getAttribute('data-reverse'),
+      reverse = this.browser()[0] === 'MSIE' && this.browser()[1] === '7.0' ? dataReverse : dataReverse === 'true' ? true : false,
       newTr,
       temp;
 
