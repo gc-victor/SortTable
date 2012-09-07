@@ -20,24 +20,26 @@
   SortTable.prototype.init = function () {
     var self = this,
       tables = document.getElementsByTagName('table'),
-      i;
+      i,
+      // Detects browsers and version
+      // @see - http://stackoverflow.com/questions/2400935/browser-detection-in-javascript
+      browser = function() {
+        var N = navigator.appName,
+          ua = navigator.userAgent,
+          tem,
+          M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
 
-    // Detects browsers and version
-    // @see - http://stackoverflow.com/questions/2400935/browser-detection-in-javascript
-    self.browser = function() {
-      var N = navigator.appName,
-        ua = navigator.userAgent,
-        tem,
-        M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+        if (M && (tem = ua.match(/version\/([\.\d]+)/i)) !== null) {
+          M[2] = tem[1];
+        }
 
-      if (M && (tem = ua.match(/version\/([\.\d]+)/i)) !== null) {
-        M[2] = tem[1];
-      }
+        M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
 
-      M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
+        return M;
+      };
 
-      return M;
-    };
+    self.browsers = browser()[0];
+    self.versions = browser()[1];
 
     self.handler = function (ev) {
       // get th to sort from current Event object
@@ -111,7 +113,7 @@
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
       dataReverse = th.getAttribute('data-reverse'),
-      reverse = this.browser()[0] === 'MSIE' && this.browser()[1] === '7.0' ? dataReverse : dataReverse === 'true' ? true : false,
+      reverse = dataReverse === 'true' ? true : false,
       newTr,
       temp;
 
@@ -121,7 +123,7 @@
       row = tbody.rows[i];
 
       // innerText doesn't work on Firefox it use textContent
-      value = this.browser()[0] === 'Firefox' ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
+      value = this.browsers === 'Firefox' ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
 
       cells.push({
         value: value,
