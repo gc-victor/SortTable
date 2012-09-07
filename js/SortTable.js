@@ -120,8 +120,8 @@
     for (i = 0; rowsLength > i; i += 1) {
       row = tbody.rows[i];
 
-      // innerText doesn't work on FF it use textContent
-      value = this.isFF ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
+      // innerText doesn't work on Firefox it use textContent
+      value = this.browser()[0] === 'Firefox' ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
 
       cells.push({
         value: value,
