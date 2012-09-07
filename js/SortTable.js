@@ -22,6 +22,10 @@
       tables = document.getElementsByTagName('table'),
       i;
 
+    // Detect Internet Explorer and Firefox browsers
+    self.isIE = (/MSIE/g).test(navigator.userAgent);
+    self.isFF = (/Firefox/g).test(navigator.userAgent);
+
     this.handler = function (ev) {
       // get th to sort from current Event object
       var th = ev.target || ev.srcElement,
@@ -93,7 +97,7 @@
       value,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      reverse = th.getAttribute('data-reverse') === 'true' ? true : false,
+      reverse = th.getAttribute('data-reverse'),
       newTr,
       temp;
 
@@ -103,16 +107,13 @@
       row = tbody.rows[i];
 
       // innerText doesn't work on FF it use textContent
-      value = row.cells[cellIndex].innerText === undefined ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
+      value = this.isFF ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
 
       cells.push({
         value: value,
         content: row.innerHTML
       });
     }
-
-    // toggle reverse status
-    th.setAttribute('data-reverse', !reverse);
 
     // sort
     cells.sort(this.sortBy[sortType]);
@@ -121,6 +122,9 @@
     if (reverse) {
       cells.reverse();
     }
+
+    // toggle reverse status
+    th.setAttribute('data-reverse', !reverse);
 
     for (i = 0; rowsLength > i; i += 1) {
       // innerHTML doesn't work on IE to empty the table, use deleteRow instead
