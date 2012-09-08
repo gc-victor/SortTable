@@ -113,7 +113,7 @@
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
       dataReverse = th.getAttribute('data-reverse'),
-      reverse = dataReverse === 'true' ? true : false,
+      reverse = this.browsers === 'MSIE' && this.versions === '7.0' ? dataReverse : dataReverse === 'true' ? true : false,
       newTr,
       temp;
 
