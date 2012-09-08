@@ -85,15 +85,8 @@
 
   // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
   SortTable.prototype.get = function (el, table) {
-    if (el === 'tbody') {
-      el = table.tBodies[0];
+      el = el === 'tbody' ? table.tBodies[0] : el === 'thead' ? table.tHead : el === 'tfoot' ? table.tFoot : null;
 
-    // get tHead or tFoot
-    } else if (el === 'thead' || el === 'tfoot') {
-      el = table[el.replace(/(\w)(\w)/, function (wholeMatch, m1, m2) { return m1 + m2.toUpperCase(); })];
-    }
-
-    // clear variables that store dom objects reference
     try {
       return el;
     } finally {
