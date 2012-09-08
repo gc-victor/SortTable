@@ -66,7 +66,7 @@
 
   // @param {string} el - table child element selectors ('tbody', 'thead', 'tfoot')
   SortTable.prototype.get = function (el, table) {
-      el = el === 'tbody' ? table.tBodies[0] : el === 'thead' ? table.tHead : el === 'tfoot' ? table.tFoot : null;
+    el = el === 'tbody' ? table.tBodies[0] : el === 'thead' ? table.tHead : el === 'tfoot' ? table.tFoot : null;
 
     try {
       return el;
@@ -87,8 +87,7 @@
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
       getReverse = th.getAttribute('data-reverse'),
-      setReverse = getReverse === null ? 'false' : getReverse.toString(),
-      reverse = setReverse === 'true' ? true : false,
+      reverse = getReverse === null ? false : getReverse.toString() === 'true' ? true : false,
       newTr,
       temp;
 
