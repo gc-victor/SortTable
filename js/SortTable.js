@@ -20,26 +20,7 @@
   SortTable.prototype.init = function () {
     var self = this,
       tables = document.getElementsByTagName('table'),
-      i,
-      // Detects browsers and version
-      // @see - http://stackoverflow.com/questions/2400935/browser-detection-in-javascript
-      browser = function() {
-        var N = navigator.appName,
-          ua = navigator.userAgent,
-          tem,
-          M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
-
-        if (M && (tem = ua.match(/version\/([\.\d]+)/i)) !== null) {
-          M[2] = tem[1];
-        }
-
-        M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
-
-        return M;
-      };
-
-    self.browsers = browser()[0];
-    self.versions = browser()[1];
+      i;
 
     self.handler = function (ev) {
       // get th to sort from current Event object
@@ -105,8 +86,9 @@
       value,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      dataReverse = th.getAttribute('data-reverse'),
-      reverse = this.browsers === 'MSIE' && this.versions === '7.0' ? dataReverse : dataReverse === 'true' ? true : false,
+      getReverse = th.getAttribute('data-reverse'),
+      setReverse = getReverse === null ? 'false' : getReverse.toString(),
+      reverse = setReverse === 'true' ? true : false,
       newTr,
       temp;
 
@@ -116,7 +98,7 @@
       row = tbody.rows[i];
 
       // innerText doesn't work on Firefox it use textContent
-      value = this.browsers === 'Firefox' ? row.cells[cellIndex].textContent : row.cells[cellIndex].innerText;
+      value = row.cells[cellIndex].textContent || row.cells[cellIndex].innerText;
 
       cells.push({
         value: value,
