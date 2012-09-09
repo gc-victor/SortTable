@@ -4,13 +4,19 @@
   <meta charset="utf-8" />
   <title>Shortable</title>
   <style type="text/css">
-    .sort {
-      cursor: pointer;
-    }
+    /* c from component */
+    .c-tables-sortable
+      .sort {
+        cursor: pointer;
+      }
+    .c-tables-sortable
+      .is-selected {
+        background: #ddd;
+      }
   </style>
 </head>
 <body>
-  <table data-sorttable="true">
+  <table class="c-tables-sortable" data-sorttable="true">
     <thead>
       <tr>
         <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
@@ -182,7 +188,7 @@
       </tr>
     </tbody>
   </table>
-  <table data-sorttable="true">
+  <table class="c-tables-sortable" data-sorttable="true">
     <thead>
       <tr>
         <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
@@ -268,7 +274,7 @@
       </tr>
     </tbody>
   </table>
-  <script type="text/javascript" src="js/SortTable.js"></script>
+  <script src="js/SortTable.js"></script>
   <script>
     // example
     SortTable();
