@@ -55,6 +55,21 @@
     }
   };
 
+  SortTable.prototype.addClass = function (el, classes) {
+    var className = el !== undefined ? el.className : '';
+    if (className !== '') {
+      el.className = className.indexOf(classes) === -1 ? classes + ' ' + className : className;
+    }
+  };
+
+  SortTable.prototype.removeClass = function (el, classes) {
+    var className = el !== undefined ? el.className : '';
+    if (className !== '') {
+      // Remove the class and any value space at the start or end
+      el.className = el.className.indexOf(classes) === 0 ? className.replace(classes, '').replace(/^\s+|\s+$/g, '') : className;
+    }
+  };
+
   // cross-platform event binding function
   SortTable.prototype.on = function (type, el, handler) {
     if (el.addEventListener) {
@@ -86,19 +101,30 @@
       value,
       cells = [],
       sortType = th.getAttribute('data-sorttable'),
-      getReverse = th.getAttribute('data-reverse'),
-      reverse = getReverse === null ? false : getReverse.toString() === 'true' ? true : false,
+      get = th.getAttribute('data-reverse'),
+      reverse = get === null ? false : get.toString() === 'true' ? true : false,
+      selected = th.parentElement.getElementsByTagName('th'),
+      el,
+      is = 'is-selected',
       newTr,
       temp;
 
-    // console.time('set');
+    // Remove the class '.is-selected' from <thead/> childs.
+    for (i = 0; i < selected.length; i += 1) {
+      el = selected[i];
+      // Like a "getElementsByClassName"
+      if (el.className && el.className.indexOf(is) === 0) {
+        this.removeClass(el, is);
+      }
+    }
+
+    // addClass '.is-selected' to the <th/> selected
+    this.addClass(th, is);
 
     for (i = 0; rowsLength > i; i += 1) {
       row = tbody.rows[i];
-
       // innerText doesn't work on Firefox it use textContent
       value = row.cells[cellIndex].textContent || row.cells[cellIndex].innerText;
-
       cells.push({
         value: value,
         content: row.innerHTML
@@ -133,9 +159,7 @@
     }
 
     // clear variables that store dom objects reference
-    temp = tbody = th = row = newTr = null;
-
-    // console.timeEnd('set');
+    temp = tbody = th = row = selected = newTr = null;
   };
 
 }());
