@@ -1,7 +1,9 @@
 // SortTable.js
 // @version 0.1
 
-(function () {
+var SortTable;
+
+!function () {
 
   // Represents the table we are going to sort.
   // @constructor
@@ -162,4 +164,4 @@
     temp = tbody = th = row = selected = newTr = null;
   };
 
-}());
+}();
