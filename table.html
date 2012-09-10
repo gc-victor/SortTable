@@ -3,277 +3,96 @@
 <head>
   <meta charset="utf-8" />
   <title>Shortable</title>
-  <style type="text/css">
-    /* c from component */
-    .c-tables-sortable
-      .sort {
-        cursor: pointer;
-      }
-    .c-tables-sortable
-      .is-selected {
-        background: #ddd;
-      }
-  </style>
+  <link href="css/master.css" rel="stylesheet" type="text/css">
+  <!--[if IE]>
+    <link href="../css/ie.css" rel="stylesheet" type="text/css" />
+  <![endif]-->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 </head>
 <body>
-  <table class="c-tables-sortable" data-sorttable="true">
-    <thead>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 1</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 2</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 3</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th scope="col">col. 1</th>
-        <th scope="col">col. 2</th>
-        <th scope="col">col. 3</th>
-      </tr>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-    </tbody>
-  </table>
-  <table>
-    <thead>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 1</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 2</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 3</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th scope="col">col. 1</th>
-        <th scope="col">col. 2</th>
-        <th scope="col">col. 3</th>
-      </tr>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-    </tbody>
-  </table>
-  <table class="c-tables-sortable" data-sorttable="true">
-    <thead>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 1</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 2</th>
-        <th class="sort" scope="col" data-sorttable="default">col. 3</th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <th scope="col">A&Ntilde;O</th>
-        <th scope="col">col. 1</th>
-        <th scope="col">col. 2</th>
-        <th scope="col">col. 3</th>
-      </tr>
-      <tr>
-        <th colspan="4" scope="col">Expansi&oacute;n de ventas</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>abcd</td>
-        <td>06</td>
-        <td>01/08/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>vscd</td>
-        <td>02</td>
-        <td>12/03/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>bcda</td>
-        <td>08</td>
-        <td>12/06/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>cdab</td>
-        <td>01</td>
-        <td>01/07/2012</td>
-      </tr>
-      <tr>
-        <th scope="row">N</th>
-        <td>zrab</td>
-        <td>04</td>
-        <td>21/10/2012</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row margin-auto" id="container">
+    <div class="clearfix margin-xl" id="header" role="banner">
+      <hgroup>
+        <h1 class="font-xxl">SortTable JS</h1>
+        <h2 class="font-xl line-height-1 font-weight-normal">A simple native JavaScript plugin to sort table data.</h2>
+      </hgroup>
+      <p>GitHub: <a href="https://github.com/gc-victor/SortTable">https://github.com/gc-victor/SortTable</a></p>
+    </div>
+    <table class="table c-tables-sortable margin-l" data-sorttable="true">
+      <thead>
+        <tr>
+          <th class="sort" scope="col" data-sorttable="default">#</th>
+          <th class="sort" scope="col" data-sorttable="default">col. 1</th>
+          <th class="sort" scope="col" data-sorttable="default">col. 2</th>
+          <th scope="col">col. 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">01</th>
+          <td>abcd</td>
+          <td>06</td>
+          <td>01/08/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">02</th>
+          <td>vscd</td>
+          <td>02</td>
+          <td>12/03/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">03</th>
+          <td>bcda</td>
+          <td>08</td>
+          <td>12/06/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">04</th>
+          <td>cdab</td>
+          <td>01</td>
+          <td>01/07/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">05</th>
+          <td>zrab</td>
+          <td>04</td>
+          <td>21/10/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">06</th>
+          <td>abcd</td>
+          <td>06</td>
+          <td>01/08/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">07</th>
+          <td>vscd</td>
+          <td>02</td>
+          <td>12/03/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">08</th>
+          <td>bcda</td>
+          <td>08</td>
+          <td>12/06/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">09</th>
+          <td>cdab</td>
+          <td>01</td>
+          <td>01/07/2012</td>
+        </tr>
+        <tr>
+          <th scope="row">10</th>
+          <td>zrab</td>
+          <td>04</td>
+          <td>21/10/2012</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <script src="js/SortTable.js"></script>
   <script>
     // example
