@@ -1,0 +1,363 @@
+/*
+  TortillaCSS Framework
+  @see - https://github.com/gc-victor/tortillacss
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+.color-0 {
+  color: white;
+}
+
+.color-1 {
+  color: #222222;
+}
+
+.color-2 {
+  color: #444444;
+}
+
+.color-3 {
+  color: #888888;
+}
+
+.color-4 {
+  color: #dddddd;
+}
+
+.border-radius {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.border-0 {
+  border-top: 1px solid #222222;
+  margin-bottom: -1px;
+}
+
+.border-1 {
+  border-top: 1px dotted #222222;
+  margin-bottom: -1px;
+}
+
+body {
+  font: 0.813em/1.615em Arial;
+  margin-bottom: 42px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+p {
+  margin-top: 21px;
+}
+
+a, a:visited {
+  color: #222222;
+}
+
+a:hover {
+  color: #888888;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.row {
+  width: 599px;
+}
+
+.gutter {
+  margin-right: 13px;
+}
+
+.columns-1 {
+  width: 89px;
+}
+
+.columns-2 {
+  width: 191px;
+}
+
+.columns-3 {
+  width: 293px;
+}
+
+.columns-4 {
+  width: 395px;
+}
+
+.columns-5 {
+  width: 497px;
+}
+
+.font-xxl {
+  font-size: 2.769em;
+  line-height: 1.75em;
+}
+
+.font-xl {
+  font-size: 1.615em;
+  line-height: 2em;
+}
+
+.font-l {
+  font-size: 1em;
+  line-height: 1.615em;
+}
+
+.font-m {
+  font-size: 0.846em;
+  line-height: 1.909em;
+}
+
+.font-s {
+  font-size: 0.769em;
+  line-height: 2.1em;
+}
+
+.line-height-1 {
+  line-height: 1em;
+}
+
+.font-weight-normal {
+  font-weight: normal;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.margin-xxl {
+  margin-top: 63px;
+}
+
+.margin-xl {
+  margin-top: 42px;
+}
+
+.margin-l {
+  margin-top: 21px;
+}
+
+.margin-m {
+  margin-top: 10.5px;
+}
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.padding {
+  padding: 10.5px;
+}
+
+.padding-top {
+  padding-top: 21px;
+}
+
+.padding-top-m {
+  padding-top: 10.5px;
+}
+
+.padding-right {
+  padding-right: 21px;
+}
+
+.padding-right-m {
+  padding-right: 10.5px;
+}
+
+.padding-left {
+  padding-left: 21px;
+}
+
+.padding-left-m {
+  padding-left: 10.5px;
+}
+
+.padding-bottom {
+  padding-bottom: 21px;
+}
+
+.padding-bottom-m {
+  padding-bottom: 10.5px;
+}
+
+.display-inlineBlock {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+}
+.display-inlineBlock {
+  *display: inline;
+}
+
+.display-inline {
+  display: inline;
+}
+
+.display-block {
+  display: block;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before, .clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.table {
+  width: 100%;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table th, .table td {
+  padding: 10.5px;
+  vertical-align: top;
+}
+.table tbody th, .table tbody td {
+  border-top: 1px solid #888;
+}
+
+.c-tables-sortable .sort {
+  cursor: pointer;
+}
+.c-tables-sortable .is-selected {
+  background: #ddd;
+}
